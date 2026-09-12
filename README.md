@@ -323,7 +323,153 @@ app.listen(port, () => {
 
 ![Обработка 404](./screenshots/18.png)
 
-## 6. Ответы на контрольные вопросы
+# Код сервера (app.py)
+
+```python
+from flask import Flask, jsonify, request
+import time
+
+app = Flask(__name__)
+
+# Консольное логирование запроса (для продвинутого уровня)
+@app.before_request
+def log_request():
+    print(f"[{time.strftime('%Y-%m-%d %H:%M:%S')}] {request.method} {request.path}")
+
+# 1. Текстовый эндпоинт
+@app.route('/')
+def home():
+    return 'Добро пожаловать на базовый сервер!'
+
+# 2. JSON эндпоинт 1
+@app.route('/api/status')
+def status():
+    return jsonify({
+        "status": "ok",
+        "framework": "Flask"
+    })
+
+# 3. JSON эндпоинт 2
+@app.route('/api/info')
+def info():
+    return jsonify({
+        "author": "Student",
+        "version": "1.0.0"
+    })
+
+# 4. JSON эндпоинт с параметром
+@app.route('/api/users/<int:user_id>')
+def get_user(user_id):
+    return jsonify({
+        "message": "Информация о пользователе",
+        "userId": user_id
+    })
+
+# Обработка 404
+@app.errorhandler(404)
+def not_found(error):
+    return jsonify({"error": "Маршрут не найден"}), 404
+
+if __name__ == '__main__':
+    app.run(port=3000, debug=True)
+```
+
+### Скриншоты результатов запросов
+
+**Корневой маршрут (`/`)**
+
+![Корневой маршрут](./screenshots/19.png)
+
+**JSON-эндпоинт (`/api/status`)**
+
+![API Status](./screenshots/20.png)
+
+**JSON-эндпоинт (`/api/info`)**
+
+![API Info](./screenshots/21.png)
+
+**Эндпоинт с параметром (`/api/users/<int:user_id>`)**
+
+![API Users](./screenshots/22.png)
+
+**Обработка 404**
+
+![404 Not Found](./screenshots/23.png)
+
+---
+
+### Индивидуальное задание продвинутого уровня на Python
+
+```python
+from flask import Flask, jsonify, request
+import time
+
+app = Flask(__name__)
+
+# ЛОГИРОВАНИЕ
+@app.before_request
+def log_request():
+    """Выводит в консоль метод, URL и время каждого запроса"""
+    print(f"[{time.strftime('%Y-%m-%d %H:%M:%S')}] {request.method} {request.path}")
+
+@app.route('/')
+def home():
+    return 'Добро пожаловать на продвинутый сервер!'
+
+@app.route('/api/users')
+def get_users():
+    users = [
+        {"id": 1, "name": "Анна", "email": "anna@example.com"},
+        {"id": 2, "name": "Иван", "email": "ivan@example.com"},
+        {"id": 3, "name": "Петр", "email": "petr@example.com"}
+    ]
+    return jsonify(users)
+
+@app.route('/api/companies')
+def get_companies():
+    companies = [
+        {"id": 1, "name": "Яндекс", "city": "Москва"},
+        {"id": 2, "name": "Google", "city": "Маунтин-Вью"},
+        {"id": 3, "name": "OpenAI", "city": "Сан-Франциско"}
+    ]
+    return jsonify(companies)
+
+@app.route('/api/users/<int:user_id>')
+def get_user(user_id):
+    return jsonify({
+        "requestedId": user_id,
+        "status": "success",
+        "message": f"Информация о пользователе с ID {user_id}"
+    })
+
+@app.errorhandler(404)
+def not_found(error):
+    return jsonify({"error": "Маршрут не найден"}), 404
+
+if __name__ == '__main__':
+    app.run(port=3000, debug=True)
+```
+
+### Скриншоты работы эндпоинтов (Задание 3 — Повышенный уровень)
+
+**Главная страница (`/`)**
+
+![Главная страница](./screenshots/24.png)
+
+**Коллекция пользователей (`/api/users`)**
+
+![Коллекция пользователей](./screenshots/25.png)
+
+**Коллекция компаний (`/api/companies`)**
+
+![Коллекция компаний](./screenshots/26.png)
+
+**Эндпоинт с параметром (`/api/users/5`)**
+
+![Эндпоинт с параметром](./screenshots/27.png)
+
+
+## Ответы на контрольные вопросы
 
 **1. Что такое бэкенд и чем он отличается от фронтенда?**
 
