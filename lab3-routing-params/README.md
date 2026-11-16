@@ -149,7 +149,7 @@ app.use((req, res, next) => {
   next();
 });
 
-// ============== ДАННЫЕ ==============
+// ДАННЫЕ
 const cities = [
   { id: 1, name: 'Москва', population: 13000000, country: 'Россия', area: 2561 },
   { id: 2, name: 'Санкт-Петербург', population: 5600000, country: 'Россия', area: 1439 },
@@ -160,13 +160,13 @@ const cities = [
 
 const allowedSortFields = ['id', 'name', 'population', 'area'];
 
-// ============== ВСПОМОГАТЕЛЬНЫЕ ==============
+// ВСПОМОГАТЕЛЬНЫЕ
 function parsePositiveInt(value) {
   const n = Number(value);
   return Number.isInteger(n) && n >= 1 ? n : null;
 }
 
-// ============== БАЗОВЫЙ + СРЕДНИЙ УРОВЕНЬ ==============
+// БАЗОВЫЙ + СРЕДНИЙ УРОВЕНЬ 
 // GET /cities — список + поиск + фильтр + сортировка + пагинация
 app.get('/cities', (req, res) => {
   let result = [...cities];
@@ -257,7 +257,7 @@ app.get('/countries/:country/cities', (req, res) => {
   res.json({ country, count: filtered.length, cities: filtered });
 });
 
-// ============== ПРОДВИНУТЫЙ УРОВЕНЬ ==============
+// ПРОДВИНУТЫЙ УРОВЕНЬ
 // GET /cities/:id/details — детали с вложенными данными
 app.get('/cities/:id/details', (req, res) => {
   const id = parsePositiveInt(req.params.id);
@@ -300,7 +300,7 @@ app.get('/countries/:country/cities/:cityId', (req, res) => {
   res.json({ country, city });
 });
 
-// ============== 404 (wildcard — всегда последним) ==============
+// 404 (wildcard — всегда последним)
 app.use((req, res) => {
   res.status(404).json({ error: 'Маршрут не найден' });
 });
